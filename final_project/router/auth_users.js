@@ -49,9 +49,16 @@ regd_users.post("/register", (req,res)=>{
 //only registered users can login
 regd_users.post("/login", (req,res) => {
   //Write your code here
-
+  console.log("Username: "+ req.body.username)
+  console.log("password: "+ req.body.password)
+  console.log (users);
   if (authenticatedUser(req.body.username, req.body.password)){
-    res.send("User logged")
+    let token = jwt.sign ({username: req.body.username, password : req.body.password},
+      "fingerprint_customer",
+      {expiresIn:'3600s'}
+    )
+    res.send("User logged " + token) 
+
   }else{
     res.send ("User does not exsit or password do not match")
   }
@@ -59,7 +66,7 @@ regd_users.post("/login", (req,res) => {
 });
 
 // Add a book review
-regd_users.put("/auth/review/:isbn", (req, res) => {
+regd_users.get("/auth/review/:isbn", (req, res) => {
   //Write your code here
   return res.status(300).json({message: "Yet to be implemented"});
 });
